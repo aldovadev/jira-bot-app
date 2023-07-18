@@ -12,6 +12,10 @@ const getUsers = require("./../Controllers/GetUsers.js");
 const updateStatus = require("./../Controllers/UpdateStatus.js");
 const getProjects = require("../Controllers/GetProject.js");
 
+router.get("/", (req, res) => {
+  res.status(200).json("API Bot JIRA Working!");
+});
+
 // Define the route and handler function
 // 1=="To Do", 11 == "In Progress", 21== "Done"
 router.post("/createProjectIssue", async (req, res) => {
