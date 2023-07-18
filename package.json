@@ -2,6 +2,18 @@
   "dependencies": {
     "axios": "^1.3.4",
     "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "nodemon": "^3.0.1",
     "request": "^2.88.2"
-  }
+  },
+  "name": "jira-bot-api",
+  "description": "JIRA CLOUD REST API INTEGRATION (Node.js, Axios, HTPP Request)",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon main",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
 }

@@ -10,24 +10,22 @@ const auth = {
   password: password,
 };
 
-// Mendapatkan Semua Issue dalam Sebuah Project Berdasarkan ID
-async function getIssueByID(issueKey) {
+// Mendapatkan List Transisi Sebuah Issue Pada Project
+async function getTransitions(issueKey) {
   try {
     const baseUrl = "https://" + domain + ".atlassian.net";
 
     const config = {
       method: "get",
-      url: baseUrl + "/rest/api/2/issue/" + issueKey,
+      url: baseUrl + "/rest/api/2/issue/" + issueKey + "/transitions",
       headers: { "Content-Type": "application/json" },
       auth: auth,
     };
     const response = await axios.request(config);
-    console.log(response.data);
     return response.data;
   } catch (error) {
-    console.log("error: ");
     console.log(error.response.data.errors);
   }
 }
 
-module.exports = getIssueByID;
+module.exports = getTransitions;

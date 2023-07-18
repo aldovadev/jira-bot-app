@@ -10,24 +10,34 @@ const auth = {
   password: password,
 };
 
-// Mendaparkan Semua Issue dalam Suatu Project
-async function getIssues() {
+// Membuat Project Untuk Cloud JIRA
+async function createProject(projectName, projectKey) {
   try {
+    const leadAccountID = process.env.LEAD_ACCT_ID;
     const baseUrl = "https://" + domain + ".atlassian.net";
+    const projKey = projectKey;
+
+    const data = {
+      key: projKey,
+      name: projectName,
+      projectTypeKey: "software",
+      leadAccountId: leadAccountID,
+    };
 
     const config = {
-      method: "get",
-      url: baseUrl + "/rest/api/2/search",
       headers: { "Content-Type": "application/json" },
       auth: auth,
     };
-    const response = await axios.request(config);
-    console.log(response.data);
-    return response.data;
+
+    const response = await axios.post(
+      `${baseUrl}/rest/api/3/project`,
+      data,
+      config
+    );
+    return response.data.key;
   } catch (error) {
-    console.log("error: ");
     console.log(error.response.data.errors);
   }
 }
 
-module.exports = getIssues;
+module.exports = createProject;

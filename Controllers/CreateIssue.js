@@ -10,37 +10,32 @@ const auth = {
   password: password,
 };
 
-// Mendapatkan List Transisi Sebuah Issue Pada Project
-async function updateStatus(issueKey, statusID) {
+// Membuat Issue Pada Sebuah Project
+async function createIssue(projectKey, issueType, summary, description) {
   try {
     const baseUrl = "https://" + domain + ".atlassian.net";
 
+    const data = {
+      fields: {
+        project: { key: projectKey },
+        summary: summary,
+        description: description,
+        issuetype: { name: issueType },
+      },
+    };
     const config = {
       headers: { "Content-Type": "application/json" },
       auth: auth,
     };
-
-    //Body to pass into POST REST API Request
-    const data = {
-      transition: {
-        id: statusID,
-      },
-    };
-
-    //use axios to make post request
     const response = await axios.post(
-      `${baseUrl}` + `/rest/api/2/issue/` + issueKey + `/transitions`,
+      `${baseUrl}/rest/api/2/issue`,
       data,
       config
     );
-
-    //if you see that you get status of 204, that means the update worked!
-    console.log(response.status);
-    return response.status;
+    return response.data.key;
   } catch (error) {
-    console.log("error: ");
     console.log(error.response.data.errors);
   }
 }
 
-module.exports = updateStatus;
+module.exports = createIssue;

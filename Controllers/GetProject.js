@@ -10,33 +10,22 @@ const auth = {
   password: password,
 };
 
-// Membuat Issue Pada Sebuah Project
-async function createIssue(projectKey, issueType, summary, description) {
+//Gets all issues in a particular project using the Jira Cloud REST API
+async function getProject() {
   try {
     const baseUrl = "https://" + domain + ".atlassian.net";
 
-    const data = {
-      fields: {
-        project: { key: projectKey },
-        summary: summary,
-        description: description,
-        issuetype: { name: issueType },
-      },
-    };
     const config = {
+      method: "get",
+      url: baseUrl + "/rest/api/3/project/recent",
       headers: { "Content-Type": "application/json" },
       auth: auth,
     };
-    const response = await axios.post(
-      `${baseUrl}/rest/api/2/issue`,
-      data,
-      config
-    );
-    return response.data.key;
+    const response = await axios.request(config);
+    return response.data;
   } catch (error) {
-    console.log("error: ");
     console.log(error.response.data.errors);
   }
 }
 
-module.exports = createIssue;
+module.exports = getProject;

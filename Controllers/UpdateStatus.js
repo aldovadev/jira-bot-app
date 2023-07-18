@@ -10,36 +10,35 @@ const auth = {
   password: password,
 };
 
-// Membuat Project Untuk Cloud JIRA
-async function createProject(projectName) {
+// Mendapatkan List Transisi Sebuah Issue Pada Project
+async function updateStatus(issueKey, statusID) {
   try {
-    const leadAccountID = process.env.LEAD_ACCT_ID;
     const baseUrl = "https://" + domain + ".atlassian.net";
-    const projKey = process.env.PROJECT_KEY;
-
-    const data = {
-      key: projKey,
-      name: projectName,
-      projectTypeKey: "software",
-      leadAccountId: leadAccountID,
-    };
 
     const config = {
       headers: { "Content-Type": "application/json" },
       auth: auth,
     };
 
+    //Body to pass into POST REST API Request
+    const data = {
+      transition: {
+        id: statusID,
+      },
+    };
+
+    //use axios to make post request
     const response = await axios.post(
-      `${baseUrl}/rest/api/3/project`,
+      `${baseUrl}` + `/rest/api/2/issue/` + issueKey + `/transitions`,
       data,
       config
     );
-    console.log(response.data);
-    return response.data.key;
+
+    //if you see that you get status of 204, that means the update worked!
+    return response.status;
   } catch (error) {
-    console.log("error: ");
     console.log(error.response.data.errors);
   }
 }
 
-module.exports = createProject;
+module.exports = updateStatus;
